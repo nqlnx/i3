@@ -1,0 +1,275 @@
+# file: ~/.config/i3/config
+# vim:ft=conf
+
+set $mod Mod4
+set $mod1 Mod1
+set $term xterm
+set $psst --no-startup-id
+set $update && killall -SIGUSR1 i3status
+set $font -misc-Termsynu-medium-r-normal--12-87-100-100-c-60-iso8859-1
+
+# defaults orientation (vertical|horizontal)
+default_orientation vertical
+
+# start ncmpcpp
+bindsym $mod+n exec xterm ncmpcpp
+
+# pavucontrol
+bindsym $mod+y exec pavucontrol
+
+# start a browser
+bindsym $mod+e exec firefox
+
+
+
+
+# border style <normal|1pixel|none|pixel>
+new_window pixel 1
+new_float pixel 1
+
+# <none|vertical|horizontal|both>
+hide_edge_borders vertical
+
+# autostart
+exec $psst sh ~/.fehbg 
+exec $psst compton 
+exec $psst xautolock 
+exec --no-startup-id nm-applet
+exec gnome-settings-daemon
+exec i3-config-wizard
+exec --no-startup-id pactl set-sink-volume 0 -- +10% && killall -SIGUSR1 i3status
+
+
+# start dmenu (a program launcher)
+bindsym $mod+x exec dmenu_run
+
+
+
+# font for window titles. ISO 10646 = Unicode
+# change font for readability
+font -Termsynu-*-*-r-*-*-*-11-*-*-*-*-*-*
+
+# class                 border  backgr. text    indicator
+client.focused          #586e75 #586e75 #fdf6e3 #268bd2
+client.focused_inactive #073642 #073642 #93a1a1 #268bd2
+client.unfocused        #073642 #073642 #93a1a1 #268bd2
+client.urgent           #dc322f #dc322f #fdf6e3 #ffa7da
+
+# window rules
+for_window [class="^(Gcolor2|Gnome-keyring-prompt-3|Gcr-prompter|MPlayer|mpv|feh)$"] floating enable
+for_window [class="^(Gcolor2|MPlayer|mpv)$"] border normal
+for_window [class="^Firefox$" title="^Library$"] floating enable border normal
+for_window [class="^Firefox$" window_role="^Preferences$"] floating enable border normal
+
+# assign the following to specific workspaces
+assign [class="^Dwb$"] 2
+
+# use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# kill focused window
+bindsym $mod+q kill
+
+
+
+# change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# focus latest urgent window
+bindsym $mod+u [urgent="latest"] focus
+
+
+
+# border changing
+bindsym $mod+b border toggle
+
+# h = vertical, v = horizontal
+# http://www.wpclipart.com/education/geometry/horizontal_vertical.png
+# split in vertical orientation
+bindsym $mod+backslash split h
+
+# split in horizontal orientation
+bindsym $mod+minus split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+t layout tabbed
+bindsym $mod+d layout toggle split
+
+# toggle tiling/floating
+bindsym $mod+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+Tab focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# focus the child container
+bindsym $mod+c focus child
+
+# make the currently focused window a scratchpad
+bindsym $mod+BackSpace move scratchpad
+
+# show the first scratchpad window
+bindsym $mod+equal scratchpad show
+
+# customize workspace names
+#set $ws1 1:term
+#set $ws2 2:www
+#set $ws3 3:chat
+#set $ws4 4:file
+
+# switch to workspace
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+
+# switch between the current workspace and the previously focused one
+workspace_auto_back_and_forth yes
+
+# move focus window to the previous workspace
+bindsym $mod+Shift+Tab move container to workspace back_and_forth
+
+# switch to next or previous workspace
+# bindsym $mod+n workspace next
+# bindsym $mod+b workspace prev
+
+# delaying urgency hint reset on workspace change
+force_display_urgency_hint 500 ms
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+
+# open terminal
+bindsym $mod+Return exec st
+bindsym $mod+Shift+Return exec $psst $xterm  st -e "tmux"
+
+
+# program launcher
+bindsym $mod+p exec $psst rofi -rnow -font "termsynu 10" -lines 10 -fg "#839496" -bg "#002b36" -hlfg "#fdf6e3" -hlbg "#859900"
+
+# list open windows to switch to
+bindsym $mod1+Tab exec $psst rofi -now -font "termsynu 10" -fg "#839496" -bg "#002b36" -hlfg "#fdf6e3" -hlbg "#859900"
+
+# guake-like behavior with urxvt
+exec $psst urxvtc -name 'scratchpad_urxvtc' -g 130x18 -cd ~/Documents
+for_window [instance="scratchpad_urxvtc"] move to scratchpad border none
+bindsym $mod+grave [instance="scratchpad_urxvtc"] scratchpad show move position 260px 16px
+
+# take screenshot with PrtSc key
+bindsym --release Print exec $psst scrot -e 'mv $f ~/ 2>/dev/null'
+bindsym $mod1+Print exec $psst import -window "$(xdotool getwindowfocus -f)" ~/snapwin-$(date +%F_%H%M%S_%N).png
+
+# volume control
+bindsym XF86AudioRaiseVolume exec $psst amixer -D pulse sset Master '3%+' $update
+bindsym XF86AudioLowerVolume exec $psst amixer -D pulse sset Master '2%-' $update
+bindsym XF86AudioMute exec $psst amixer -q sset Master toggle $update
+
+# resize window (you can also use the mouse for that)
+mode "RESIZE MODE" {
+    bindsym h resize shrink width 10 px or 10 ppt
+    bindsym j resize grow height 10 px or 10 ppt
+    bindsym k resize shrink height 10 px or 10 ppt
+    bindsym l resize grow width 10 px or 10 ppt
+
+    # back to normal: Enter or Escape
+    bindsym q mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "RESIZE MODE"
+
+# control music
+set $ncm ncmpcpp -c $XDG_CONFIG_HOME/ncmpcpp/config
+mode "MPD CONTROL" {
+    bindsym h exec $psst mpc prev
+    bindsym l exec $psst mpc next
+    bindsym p exec $psst mpc toggle
+    bindsym s exec $psst mpc stop;mode "default"
+    bindsym n exec $psst $term -e $ncm; mode "default"
+    bindsym a exec $psst $term -e alsamixer -c 0; mode "default"
+    bindsym equal exec $psst mpc volume +3
+    bindsym minus exec $psst mpc volume -3
+
+    bindsym q mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+m mode "MPD CONTROL"
+
+# system
+set $session "Session: (L)ock (E)xit"
+mode  $session {
+    bindsym l exec $psst i3lock -c 002b36; mode "default"
+    bindsym e exec $psst i3-msg exit; mode "default"
+
+    bindsym q mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+o mode $session
+
+# tmux
+set $attach "Attach: (T)orrent"
+mode  $attach {
+    bindsym t exec $psst $term -e tmux attach -t torrent; mode "default"
+
+    bindsym q mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+w mode $attach
+
+# i3bar
+bar {
+    position top
+    font pango:Source Code Pro for tamsyn 9
+
+     status_command i3status
+    colors {
+        background #002b36
+        statusline #93a1a1
+        separator  #073642
+        focused_workspace  #586e75 #657b83 #fdf6e3
+        active_workspace   #1a2122 #232323 #eee8d5
+        inactive_workspace #073642 #073642 #93a1a1
+        urgent_workspace   #dc322f #dc322f #fdf6e3
+
+
+
+    }
+}
+
+
+
+
