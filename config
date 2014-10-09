@@ -6,7 +6,7 @@ set $mod1 Mod1
 set $term xterm
 set $psst --no-startup-id
 set $update && killall -SIGUSR1 i3status
-set $font -misc-Termsynu-medium-r-normal--12-87-100-100-c-60-iso8859-1
+set $font -misc-termsyn-medium-r-normal--12-87-100-100-c-60-iso8859-1
 
 # defaults orientation (vertical|horizontal)
 default_orientation vertical
@@ -44,6 +44,14 @@ exec --no-startup-id pactl set-sink-volume 0 -- +10% && killall -SIGUSR1 i3statu
 bindsym $mod+x exec dmenu_run
 
 
+# some gnome helpers
+#exec --no-startup-id /usr/lib/gnome-settings-daemon/gnome-settings-daemon
+#exec --no-startup-id /usr/lib/gnome-settings-daemon/gnome-fallback-mount-helper
+#exec --no-startup-id /usr/lib/fingerprint-gui/fingerprint-polkit-agent -d
+#exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+#exec --no-startup-id nm-applet
+#exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+#exec xcompmgr
 
 # font for window titles. ISO 10646 = Unicode
 # change font for readability
@@ -70,6 +78,7 @@ floating_modifier $mod
 # kill focused window
 bindsym $mod+q kill
 
+ 
 
 
 # change focus
@@ -170,6 +179,8 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 
+bindsym $mod+0 exec systemctl poweroff
+
 # open terminal
 bindsym $mod+Return exec st
 bindsym $mod+Shift+Return exec $psst $xterm  st -e "tmux"
@@ -253,7 +264,7 @@ bindsym $mod+w mode $attach
 # i3bar
 bar {
     position top
-    font pango:Source Code Pro for tamsyn 9
+   font pango:Source Code Pro for termsyn 8.8
 
      status_command i3status
     colors {
